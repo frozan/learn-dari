@@ -119,7 +119,10 @@ function show(x){$("F").hidden=x!=="F";$("S").hidden=x!=="S";$("tF").classList.t
 function cats(){const names=["All",...new Set(WORDS.map(w=>w.c))];$("cats").innerHTML="";
  names.forEach(n=>{const b=document.createElement("button");b.textContent=n;b.setAttribute("aria-pressed",n===cat);
   b.onclick=()=>{cat=n;deck=n==="All"?WORDS:WORDS.filter(w=>w.c===n);i=0;cats();card();};$("cats").appendChild(b);});}
-function card(){const w=deck[i];$("card").classList.remove("flip");$("fe").textContent=w.e;$("fd").textContent=w.d;$("ft").textContent=w.t;$("fn").textContent=w.n;$("cnt").textContent=(i+1)+" / "+deck.length;}
+function card(){const w=deck[i],c=$("card");$("fe").textContent=w.e;$("cnt").textContent=(i+1)+" / "+deck.length;
+ const setBack=()=>{$("fd").textContent=w.d;$("ft").textContent=w.t;$("fn").textContent=w.n;};
+ clearTimeout(window.bt);
+ if(c.classList.contains("flip")){c.classList.remove("flip");window.bt=setTimeout(setBack,520);}else setBack();}
 function step(d){i=(i+d+deck.length)%deck.length;card();}
 
 function shuffle(orig){let a;do{a=orig.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];}}while(a.length>1&&a.every((v,k)=>v===orig[k]));return a;}
